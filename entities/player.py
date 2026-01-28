@@ -36,36 +36,18 @@ class Player:
 
         self.__face_right = True
 
-    def update(self, dt):
-
-        keys = pygame.key.get_pressed()
-
-        # -- Player movement -- #
-
-        # Go left
-        if keys[pygame.K_q] or keys[pygame.K_LEFT]:
-            self.move(-self.speed * dt)
-        # Go right
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            self.move(self.speed * dt)
-
-        # -- Quit -- #
-        if keys[pygame.K_ESCAPE]:
-            return False
-
-        return True
-
-        self.food -= dt * self.food_decrease_speed
-        print(self.food)
 
     def flip(self):
         self.image = pygame.transform.flip(self.image, True, False)
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
-        if DEBUG:
-            pygame.draw.rect(screen, (255, 255, 0), self.rect, 1)  # Show image rect
-            pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 1)  # Show hitbox
+
+    def move_left(self, dt):
+        self.move(-self.speed * dt)
+
+
+    def move_right(self, dt):
+        self.move(self.speed * dt)
+
 
     def move(self, amount):
         if amount > 0:  # Move to the right
@@ -85,3 +67,16 @@ class Player:
         # Move the image and hitbox
         self.rect.x += amount
         self.hitbox.x += amount
+
+
+    def update(self, dt):
+        self.food -= dt * self.food_decrease_speed
+        # print(self.food)
+
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+        if DEBUG:
+            pygame.draw.rect(screen, (255, 255, 0), self.rect, 1)  # Show image rect
+            pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 1)  # Show hitbox
+
