@@ -3,6 +3,7 @@ from entities.player import Player
 from pathlib import Path
 from .background import Background
 from interfaces.pause import PauseMenu
+from entities.effects import XSpeedModifier
 
 WALL_TEXTURES = Path("assets/images/wall-textures")
 FULLSCREEN = True
@@ -32,6 +33,9 @@ class Level1:
 
         self.pause_menu = PauseMenu(self)
 
+        self.speed_potion = XSpeedModifier(self.player, 2, 2)
+        self.slow_potion = XSpeedModifier(self.player, 0.333333, 5)
+
 
     def pause(self):
         self.pause = True
@@ -58,11 +62,17 @@ class Level1:
                 else:
                     self.pause = True
 
+            elif event.key == pygame.K_a:
+                self.speed_potion.activate()
+            elif event.key == pygame.K_z:
+                self.slow_potion.activate()
+
         self.pause_menu.handle_events(event)
 
 
     def update(self, dt):
         if not self.pause:
+            self.player.update(dt)
             self.background.update(dt)
 
             keys = pygame.key.get_pressed()

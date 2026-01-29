@@ -29,24 +29,35 @@ class Player:
             self.hitbox = self.rect.copy()
             self.__hitbox_offset = 0, 0
 
-        self.speed = 600
+        self.x_speed = 600
+        self.y_speed = 400
 
         self.food = 100
         self.food_decrease_speed = 2  # 2 per seconds
 
         self.__face_right = True
 
+        self.effects_list = []
+
 
     def flip(self):
         self.image = pygame.transform.flip(self.image, True, False)
 
 
+    def set_x_speed(self, x_speed):
+        self.x_speed = x_speed
+
+
+    def set_y_speed(self, y_speed):
+        self.y_speed = y_speed
+
+
     def move_left(self, dt):
-        self.move(-self.speed * dt)
+        self.move(-self.x_speed * dt)
 
 
     def move_right(self, dt):
-        self.move(self.speed * dt)
+        self.move(self.x_speed * dt)
 
 
     def move(self, amount):
@@ -69,9 +80,20 @@ class Player:
         self.hitbox.x += amount
 
 
+    def add_effect(self, effect):
+        self.effects_list.append(effect)
+
+
+    def remove_effect(self, effect):
+        self.effects_list.remove(effect)
+
+
     def update(self, dt):
         self.food -= dt * self.food_decrease_speed
         # print(self.food)
+
+        for effect in self.effects_list:
+            effect.update(dt)
 
 
     def draw(self, screen):
@@ -79,4 +101,3 @@ class Player:
         if DEBUG:
             pygame.draw.rect(screen, (255, 255, 0), self.rect, 1)  # Show image rect
             pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 1)  # Show hitbox
-
