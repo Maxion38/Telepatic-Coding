@@ -26,9 +26,8 @@ class Menu:
         self.gecko_image = pygame.transform.rotate(self.gecko_image, 50)
 
         self.start_button = Button(
-            x=100, y=100, width=200, height=60,
+            width=200, height=60,
             text="Démarrer",
-            font=self.font,
             color=(60, 200, 100),
             hover_color=(100, 240, 140),
             action=self.start_game 

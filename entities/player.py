@@ -108,7 +108,6 @@ class Player:
             self.food -= dt * self.FOOD_DECREASE_SPEED
             self.food_gauge.decrease_capacity(dt * self.FOOD_DECREASE_SPEED)
             if self.food <= 0:
-                print("You died")
                 self.isAlive = False
                 self.calling_scene.die()
 

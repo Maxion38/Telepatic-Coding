@@ -1,10 +1,11 @@
 import pygame
 
 class Button:
-    def __init__(self, x, y, width, height, text, font, color, hover_color, action=None):
-        self.rect = pygame.Rect(x, y, width, height)
+    def __init__(self, width, height, text, color, hover_color, action=None):
+        self.rect = pygame.Rect(0, 0, width, height)
         self.text = text
-        self.font = font
+        self.font = pygame.font.Font(None, 30)
+        #self.font = font
         self.color = color
         self.hover_color = hover_color
         self.action = action  # fonction à appeler quand on clique
