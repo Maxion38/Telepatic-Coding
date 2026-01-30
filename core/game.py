@@ -30,6 +30,10 @@ class Game:
 
         self.current_scene = self.menu
 
+
+    def reset_scene(self, scene):
+        self.current_scene = scene
+
     
     def quit(self):
         self.running = False

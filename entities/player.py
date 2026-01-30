@@ -1,12 +1,17 @@
 import pygame
 from pathlib import Path
+from interfaces.gauge import Gauge
 
 ASSETS = Path("assets/images")
 DEBUG = False
 
 
 class Player:
-    def __init__(self, pos, sprite_name="gecko-sprite.png", scale=.33, hitbox="auto"):
+    def __init__(self, calling_scene, pos, sprite_name="gecko-sprite.png", scale=.33, hitbox="auto"):
+        self.calling_scene = calling_scene
+        self.screen = calling_scene.screen
+        self.screen_rect = self.screen.get_rect()
+
         image = pygame.image.load(
             ASSETS / sprite_name
         ).convert_alpha()
@@ -29,11 +34,18 @@ class Player:
             self.hitbox = self.rect.copy()
             self.__hitbox_offset = 0, 0
 
+        self.isAlive = True
         self.x_speed = 600
         self.y_speed = 400
 
         self.food = 100
-        self.food_decrease_speed = 2  # 2 per seconds
+        self.FOOD_DECREASE_SPEED = 5
+
+        self.food_gauge = Gauge(False, 20, 200, (150, 150, 150), (200, 90, 30), self.food, self.food)
+        self.food_gauge.rect.midleft = (
+            self.screen_rect.left + 20,
+            self.screen_rect.top + 20
+        )
 
         self.__face_right = True
 
@@ -89,11 +101,16 @@ class Player:
 
 
     def update(self, dt):
-        self.food -= dt * self.food_decrease_speed
-        # print(self.food)
+        if self.isAlive:
+            for effect in self.effects_list:
+                effect.update(dt)
 
-        for effect in self.effects_list:
-            effect.update(dt)
+            self.food -= dt * self.FOOD_DECREASE_SPEED
+            self.food_gauge.decrease_capacity(dt * self.FOOD_DECREASE_SPEED)
+            if self.food <= 0:
+                print("You died")
+                self.isAlive = False
+                self.calling_scene.die()
 
 
     def draw(self, screen):
@@ -101,3 +118,5 @@ class Player:
         if DEBUG:
             pygame.draw.rect(screen, (255, 255, 0), self.rect, 1)  # Show image rect
             pygame.draw.rect(screen, (255, 0, 0), self.hitbox, 1)  # Show hitbox
+
+        self.food_gauge.draw(self.screen)

@@ -3,10 +3,12 @@ from interfaces.button import Button
 
 
 class PauseMenu:
-    def __init__(self, calling_scene):
+    def __init__(self, calling_scene, buttons):
         self.calling_scene = calling_scene
         self.screen = calling_scene.screen
         self.screen_rect = self.screen.get_rect()
+
+        self.buttons = buttons
 
         # --- Overlay ---
         self.overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
@@ -14,53 +16,14 @@ class PauseMenu:
 
         # --- Central pannel ---
         panel_width = 400
-        panel_height = 370
+        BASE_HEIGHT = 160
+        BUTTON_HEIGHT = 70
+        panel_height = BASE_HEIGHT + (BUTTON_HEIGHT * self.buttons.length())
         self.panel_rect = pygame.Rect(0, 0, panel_width, panel_height)
         self.panel_rect.center = self.screen_rect.center
 
         # --- Font ---
         self.font = pygame.font.Font(None, 36)
-
-        # --- Boutons ---
-        btn_width = 200
-        btn_height = 50
-        btn_x = self.panel_rect.centerx - btn_width // 2
-
-        self.resume_button = Button(
-            btn_x,
-            self.panel_rect.top + 100,
-            btn_width,
-            btn_height,
-            "Resume",
-            self.font,
-            (60, 200, 100),
-            (100, 240, 140),
-            action=self.resume
-        )
-
-        self.menu_button = Button(
-            btn_x,
-            self.panel_rect.top + 170,
-            btn_width,
-            btn_height,
-            "Menu",
-            self.font,
-            (60, 200, 100),
-            (100, 240, 140),
-            action=self.to_menu
-        )
-
-        self.quit_button = Button(
-            btn_x,
-            self.panel_rect.top + 240,
-            btn_width,
-            btn_height,
-            "Quit",
-            self.font,
-            (220, 140, 200),
-            (255, 180, 240),
-            action=self.quit
-        )
 
 
     # ---------------- ACTIONS ----------------
