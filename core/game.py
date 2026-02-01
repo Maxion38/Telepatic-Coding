@@ -10,6 +10,8 @@ class Game:
     def __init__(self, fps=60):
         pygame.init()
 
+        self.game = self
+
         init_width, init_height = 1200, 600
 
         self.screen = (
@@ -30,7 +32,7 @@ class Game:
 
         self.current_scene = self.menu
 
-    
+
     def quit(self):
         self.running = False
 
@@ -38,7 +40,7 @@ class Game:
     def change_scene(self, scene_name):
         match scene_name:
             case "level1":
-                self.current_scene = self.level1
+                self.current_scene = Level1(self.game)
             case "menu":
                 self.current_scene = self.menu
 
